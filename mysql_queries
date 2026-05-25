@@ -1,0 +1,160 @@
+CREATE DATABASE traffic_project;
+
+USE traffic_project;
+
+CREATE TABLE traffic_data (
+    id INT,
+    date DATE,
+    time TIME,
+    city VARCHAR(50),
+    area VARCHAR(50),
+    vehicle_count INT,
+    avg_speed INT,
+    congestion_level VARCHAR(20),
+    weather VARCHAR(20),
+    accident_count INT,
+    road_type VARCHAR(30),
+    signal_wait_time INT,
+    travel_time INT
+);
+
+SELECT * FROM traffic_data;
+
+-- Total Traffic by City
+SELECT city,
+SUM(vehicle_count) AS total_traffic
+FROM traffic_data
+GROUP BY city
+ORDER BY total_traffic DESC;
+
+-- Average Speed by City
+SELECT city,
+AVG(avg_speed) AS average_speed
+FROM traffic_data
+GROUP BY city
+ORDER BY average_speed DESC;
+
+-- Weather Impact on Traffic
+SELECT weather,
+SUM(vehicle_count) AS total_vehicles
+FROM traffic_data
+GROUP BY weather;
+
+-- Accident Hotspots
+SELECT city,
+SUM(accident_count) AS total_accidents
+FROM traffic_data
+GROUP BY city
+ORDER BY total_accidents DESC;
+
+-- Congestion Distribution
+SELECT congestion_level,
+COUNT(*) AS total_records
+FROM traffic_data
+GROUP BY congestion_level;
+
+-- Traffic by Area
+SELECT area,
+SUM(vehicle_count) AS total_traffic
+FROM traffic_data
+GROUP BY area
+ORDER BY total_traffic DESC;
+
+-- Average Travel Time
+SELECT city,
+AVG(travel_time) AS avg_travel_time
+FROM traffic_data
+GROUP BY city;
+
+-- Signal Wait Time Analysis
+SELECT city,
+AVG(signal_wait_time) AS avg_signal_wait
+FROM traffic_data
+GROUP BY city;
+
+-- Road Type Analysis
+SELECT road_type,
+SUM(vehicle_count) AS total_vehicles,
+AVG(avg_speed) AS average_speed
+FROM traffic_data
+GROUP BY road_type;
+
+-- Lowest Speed Areas
+SELECT city,
+area,
+avg_speed
+FROM traffic_data
+ORDER BY avg_speed ASC
+LIMIT 5;
+-- Peak Traffic Hours
+SELECT HOUR(time) AS hour,
+SUM(vehicle_count) AS total_traffic
+FROM traffic_data
+GROUP BY hour
+ORDER BY total_traffic DESC;
+
+-- Highest Congestion Areas
+SELECT area,
+city,
+congestion_level,
+vehicle_count
+FROM traffic_data
+WHERE congestion_level = 'High'
+ORDER BY vehicle_count DESC;
+
+-- Rainy Weather Traffic Analysis
+SELECT city,
+AVG(vehicle_count) AS avg_traffic
+FROM traffic_data
+WHERE weather = 'Rainy'
+GROUP BY city;
+
+-- Highway vs City Road Analysis
+SELECT road_type,
+AVG(avg_speed) AS avg_speed,
+AVG(travel_time) AS avg_travel_time
+FROM traffic_data
+GROUP BY road_type;
+
+-- Accident-Prone Weather Conditions
+SELECT weather,
+SUM(accident_count) AS total_accidents
+FROM traffic_data
+GROUP BY weather
+ORDER BY total_accidents DESC;
+
+-- Top 5 Busiest Cities
+SELECT city,
+SUM(vehicle_count) AS total_traffic
+FROM traffic_data
+GROUP BY city
+ORDER BY total_traffic DESC
+LIMIT 5;
+
+-- Lowest Average Speed Cities
+SELECT city,
+AVG(avg_speed) AS avg_speed
+FROM traffic_data
+GROUP BY city
+ORDER BY avg_speed ASC;
+
+-- Average Signal Wait Time
+SELECT city,
+AVG(signal_wait_time) AS avg_signal
+FROM traffic_data
+GROUP BY city
+ORDER BY avg_signal DESC;
+
+-- Travel Time Analysis
+SELECT city,
+AVG(travel_time) AS avg_travel
+FROM traffic_data
+GROUP BY city
+ORDER BY avg_travel DESC;
+
+-- Traffic Based on Weather
+SELECT weather,
+SUM(vehicle_count) AS total_vehicles
+FROM traffic_data
+GROUP BY weather
+ORDER BY total_vehicles DESC;
